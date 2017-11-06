@@ -1,0 +1,21 @@
+<html>
+<head><title>Home Page</title>
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+  
+  <script src="assets/bootstrap/js/jquery.min.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<h1>Welcome to <span th:text="${appName}">Our App</span></h1>
+
+
+	<div class="container">
+	<textarea id="user_name" placeholder="Type your Name"
+		class="form-control chat-input" autofocus="autofocus" style="width: 50%; height: 40px; border: none; resize: none;"></textarea>
+	
+
+<button id="submit_button" type="button" class="btn btn-primary">Submit</button>
+</div>
+<script src="assets/js/request.js"></script>
+</body>
+</html>
