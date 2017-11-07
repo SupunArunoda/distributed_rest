@@ -1,21 +1,111 @@
 <html>
-<head><title>Home Page</title>
-  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
-  
-  <script src="assets/bootstrap/js/jquery.min.js"></script>
-  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<head>
+<title>Home Page</title>
+<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+
+<script src="assets/bootstrap/js/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h1>Welcome to <span th:text="${appName}">Our App</span></h1>
+
+
+
+
+	<h1>
+		Welcome to <span th:text="${appName}">Our App</span>
+	</h1>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="form-group">
+					<input type="text" class="form-control" id="username"
+						placeholder="username"></input>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group">
+					<input type="text" class="form-control" id="ip" placeholder="ip"></input>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<input type="text" class="form-control" id="port"
+						placeholder="port"></input>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<button type="button" class="btn btn-success" style="width: 100%;">Register</button>
+
+			</div>
+			<div class="col-sm-2">
+				<button type="button" class="btn btn-info" style="width: 100%;">Unregister</button>
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col-sm-3 panel panel-default">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Firstname</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>John</td>
+						</tr>
+						<tr>
+							<td>Mary</td>
+						</tr>
+						<tr>
+							<td>July</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+			<div class="col-sm-6"></div>
+			<div class="col-sm-3 panel panel-default">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>ip</th>
+							<th>port</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>John</td>
+							<td>Doe</td>
+						</tr>
+						<tr>
+							<td>Mary</td>
+							<td>Moe</td>
+						</tr>
+						<tr>
+							<td>July</td>
+							<td>Dooley</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+
+		</div>
+
+	</div>
 
 
 	<div class="container">
-	<textarea id="user_name" placeholder="Type your Name"
-		class="form-control chat-input" autofocus="autofocus" style="width: 50%; height: 40px; border: none; resize: none;"></textarea>
-	
+		<textarea id="user_name" placeholder="Type your Name"
+			class="form-control chat-input" autofocus="autofocus"
+			style="width: 50%; height: 40px; border: none; resize: none;"></textarea>
 
-<button id="submit_button" type="button" class="btn btn-primary">Submit</button>
-</div>
-<script src="assets/js/request.js"></script>
+
+		<button id="submit_button" type="button" class="btn btn-primary">Submit</button>
+
+	</div>
+	<script src="assets/js/request.js"></script>
 </body>
 </html>
