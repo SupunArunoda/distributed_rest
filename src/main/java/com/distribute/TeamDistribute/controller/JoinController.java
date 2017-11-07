@@ -18,19 +18,17 @@ import com.distribute.TeamDistribute.service.JoinService;
 public class JoinController {
 	
 
-@Autowired
-private JoinService joinservice;
-
-@Value("${resource.node.ip}")
-String nodeIP;
-
-@Value("${server.port}")
-int nodePort;	
+	@Autowired
+	private JoinService joinservice;
+	
+	@Value("${resource.node.ip}")
+	String nodeIP;
+	
+	@Value("${server.port}")
+	int nodePort;	
 
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public int getJoin(@RequestBody Map<String, String> node) {
-		String ip=node.get("ip");
-		String port=node.get("port");
 		int value=joinservice.joinNode(node);
 //		Node node_return=new Node();
 //		node.setNodeIP(nodeIP);

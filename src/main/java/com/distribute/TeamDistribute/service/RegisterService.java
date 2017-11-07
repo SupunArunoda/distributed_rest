@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.distribute.TeamDistribute.Global;
 import com.distribute.TeamDistribute.model.Node;
 
 @Service
@@ -72,7 +73,7 @@ public class RegisterService {
                     int answer = restTemplate.postForObject(uri, entity, Integer.class);
 
                     if(answer==0) {
-                    	JoinService.neighborTable.add(node);
+                    	Global.neighborTable.add(node);
                     }
                     System.out.println("My value "+node.get("ip")+" "+node.get("port"));
             	}
@@ -91,7 +92,7 @@ public class RegisterService {
                     int answer = restTemplate.postForObject(uri, entity, Integer.class);
 
                     if(answer==0) {
-                    	JoinService.neighborTable.add(node);
+                    	Global.neighborTable.add(node);
                     }
                     System.out.println("My value "+node.get("ip")+" "+node.get("port"));
                     
@@ -102,7 +103,7 @@ public class RegisterService {
                     answer = restTemplate.postForObject(uri, entity, Integer.class);
 
                     if(answer==0) {
-                    	JoinService.neighborTable.add(node);
+                    	Global.neighborTable.add(node);
                     }
                     System.out.println("My value "+node.get("ip")+" "+node.get("port"));
                     

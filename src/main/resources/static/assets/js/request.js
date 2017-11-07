@@ -1,4 +1,9 @@
 var baseUrl = window.location.href;
+var hostPort = baseUrl.split("/")[2];
+var host = hostPort.split(":")[0];
+var port = hostPort.split(":")[1];
+
+document.getElementById("username").value = ${host};
 
 document.getElementById("submit_button").addEventListener("click",
 		function() {

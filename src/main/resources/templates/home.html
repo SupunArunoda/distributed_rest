@@ -25,13 +25,12 @@
 			</div>
 			<div class="col-sm-3">
 				<div class="form-group">
-					<input type="text" class="form-control" id="ip" placeholder="ip"></input>
+					<input type="text" class="form-control" id="ip" th:value="${host}" readonly="readonly"/>
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
-					<input type="text" class="form-control" id="port"
-						placeholder="port"></input>
+					<input type="text" class="form-control" id="port"  th:value="${port}" readonly="readonly"/>
 				</div>
 			</div>
 			<div class="col-sm-2">

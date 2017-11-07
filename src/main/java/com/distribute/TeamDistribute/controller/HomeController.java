@@ -10,10 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
     @Value("${spring.application.name}")
     String appName;
+    
+    @Value("${resource.node.ip}")
+    String host;
+    
+    @Value("${server.port}")
+    String port;
  
     @GetMapping("/")
     public String homePage(Model model) {
         model.addAttribute("appName", appName);
+        model.addAttribute("host", host);
+        model.addAttribute("port", port);
         return "home";
     }
     
