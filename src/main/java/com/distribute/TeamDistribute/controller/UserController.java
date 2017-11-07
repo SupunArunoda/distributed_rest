@@ -44,23 +44,9 @@ public class UserController {
 		registerService.registerNode(nodeIp, nodePort, message.get("user"));
 	}
 	
-//	public void registerNode(String ip,int port,String username) {
-//		
-//		try{
-//			DatagramSocket receiveSock = new DatagramSocket(port);
-//            String init_request = "REG " + ip + " " + port + " " + username;
-//            int length = init_request.length() + 5;
-//            init_request = String.format("%04d", length) + " " + init_request;
-//            DatagramPacket regrequest = new DatagramPacket(init_request.getBytes(), init_request.getBytes().length,
-//            		InetAddress.getByName(bootstrapServerUrl), bootstrapServerPort);
-//            receiveSock.send(regrequest);
-//            receiveSock.close();
-//
-//        }
-//        catch (SocketException e1) {
-//            e1.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//	}
+	@RequestMapping(value = "/nouser", method = RequestMethod.POST)
+	public void unregisterUser(@RequestBody Map<String, String> message) {
+
+		//registerService.registerNode(nodeIp, nodePort, message.get("user"));
+	}
 }

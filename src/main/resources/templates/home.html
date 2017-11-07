@@ -1,4 +1,4 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Home Page</title>
 <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
@@ -11,35 +11,37 @@
 
 
 
-	<h1>
-		Welcome to <span th:text="${appName}">Our App</span>
-	</h1>
+
 
 	<div class="container">
+		<h1>
+		Welcome to <span th:text="${appName}">Our App</span>
+	</h1>
 		<div class="row">
 			<div class="col-sm-3">
 				<div class="form-group">
-					<input type="text" class="form-control" id="username"
+					<input type="text" class="form-control" id="user_name"
 						placeholder="username"></input>
 				</div>
 			</div>
 			<div class="col-sm-3">
 				<div class="form-group">
-					<input type="text" class="form-control" id="ip" placeholder="ip"></input>
+				<input type="text" class="form-control" id="ip" th:value="'IP : ' + ${nodeIP}" readonly="readonly"
+				placeholder="ip"></input>
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
-					<input type="text" class="form-control" id="port"
+					<input type="text" class="form-control" id="port" th:value="'Port : ' + ${nodePort}" readonly="readonly"
 						placeholder="port"></input>
 				</div>
 			</div>
 			<div class="col-sm-2">
-				<button type="button" class="btn btn-success" style="width: 100%;">Register</button>
+				<button type="button" id="submit_button" class="btn btn-success" style="width: 100%;">Register</button>
 
 			</div>
 			<div class="col-sm-2">
-				<button type="button" class="btn btn-info" style="width: 100%;">Unregister</button>
+				<button type="button" id="unregister_button" class="btn btn-info" style="width: 100%;">Unregister</button>
 			</div>
 
 		</div>
@@ -96,16 +98,6 @@
 
 	</div>
 
-
-	<div class="container">
-		<textarea id="user_name" placeholder="Type your Name"
-			class="form-control chat-input" autofocus="autofocus"
-			style="width: 50%; height: 40px; border: none; resize: none;"></textarea>
-
-
-		<button id="submit_button" type="button" class="btn btn-primary">Submit</button>
-
-	</div>
 	<script src="assets/js/request.js"></script>
 </body>
 </html>
