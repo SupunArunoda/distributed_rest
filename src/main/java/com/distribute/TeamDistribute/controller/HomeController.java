@@ -16,13 +16,18 @@ public class HomeController {
 
     @Value("${server.port}")
     String nodePort;
+    
+    @Value("${server.port}")
+    String port;
  
     @GetMapping("/")
     public String homePage(Model model) {
     	System.out.println(nodeIP+" "+nodePort);
         model.addAttribute("appName", appName);
+
         model.addAttribute("nodeIP",nodeIP);
         model.addAttribute("nodePort",nodePort);
+
         return "home";
     }
     
