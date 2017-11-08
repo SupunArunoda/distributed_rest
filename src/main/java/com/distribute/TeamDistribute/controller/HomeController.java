@@ -9,6 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.distribute.TeamDistribute.Global;
+
+import net.minidev.json.JSONObject;
+
 @Controller
 public class HomeController {
 	@Autowired
@@ -33,6 +37,8 @@ public class HomeController {
         model.addAttribute("nodeIP",nodeIP);
         model.addAttribute("nodePort",nodePort);
 
+        model.addAttribute("files", Global.filesList);
+      //  System.out.println(Global.filesList.get(0));
         return "home";
     }
     
