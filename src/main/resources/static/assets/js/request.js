@@ -1,5 +1,5 @@
 var baseUrl = window.location.href;
-
+var tablUpdIntId;
 
 var fileList = document.getElementById("files").value;
 var files = fileList.substring(1,fileList.length-1);
@@ -25,17 +25,17 @@ document.getElementById("filesearch").addEventListener("keypress",
 	var key = e.which || e.keyCode;
     if (key === 13) { // 13 is enter
     	var searchelement = document.getElementById("filesearch").value;
-    	
+
     	searchFile(searchelement);
       document.getElementById("filesearch").value="";
 //      fileUpdateID=setInterval(function(){
-//    		
+//
 //    	  searchNodeFile(searchelement);
-//    		
+//
 //    	}, 1000);
       searchNodeFile(searchelement);
 //      clearInterval(fileUpdateID)
-      
+
     }
 
 		}, false);
@@ -44,6 +44,9 @@ document.getElementById("submit_button").addEventListener("click",
 			var username = document.getElementById("user_name").value;
 			if (username.trim() != "") {
 				registerUser(username);
+				tablUpdIntId = setInterval(function(){
+					getNeighbours();
+				}, 60000);
 				this.disabled=true;
 				document.getElementById("unregister_button").disabled=false;
 				document.getElementById("user_name").value="";
@@ -53,6 +56,7 @@ document.getElementById("submit_button").addEventListener("click",
 
 document.getElementById("unregister_button").addEventListener("click",
 		function() {
+			clearInterval(tablUpdIntId);
 			var myip = document.getElementById("ip").value;
 			var myport = document.getElementById("port").value;
 			var username = document.getElementById("user_name").value;
@@ -75,9 +79,7 @@ function registerUser(username) {
 		processData : false, // Avoid making query string instead of JSON
 		data : JSON.stringify({
 			user : username
-		}
-		
-		)
+		})
 		
 	}).done(function(data) {
 		console.log('AJAX call was successfully executed ;)');
@@ -99,9 +101,7 @@ function unregisterUser(myip,myport) {
 		data : JSON.stringify({
 			ip : myip,
 			port : myport
-		}
-		
-		)
+		})
 		
 	}).done(function(data) {
 		console.log('AJAX call was successfully executed ;)');
@@ -112,7 +112,7 @@ function unregisterUser(myip,myport) {
 }
 
 function searchFile(fileName) {
-	
+
 	$.ajax({
 		contentType : 'application/json;charset=UTF-8',
 		url : baseUrl + 'selfSearch',
@@ -123,9 +123,9 @@ function searchFile(fileName) {
 		data : JSON.stringify({
 			file_name : fileName
 		}
-		
+
 		)
-		
+
 	}).done(function(data) {
 		console.log('AJAX call was successfully executed ;)');
 		var searchedbody = document.getElementById('searched_file'), tr, td;
@@ -142,8 +142,8 @@ function searchFile(fileName) {
 		    tr.appendChild(td1);
 		    tr.appendChild(td2);
 		    searchedbody.appendChild(tr);
-		      
-			
+
+
 		}
 	}).fail(function(data) {
 		console.log(data);
@@ -152,7 +152,7 @@ function searchFile(fileName) {
 }
 
 function searchNodeFile(fileName) {
-	
+
 	$.ajax({
 		contentType : 'application/json;charset=UTF-8',
 		url : baseUrl + 'result',
@@ -163,9 +163,9 @@ function searchNodeFile(fileName) {
 		data : JSON.stringify({
 			file_name : fileName
 		}
-		
+
 		)
-		
+
 	}).done(function(data) {
 		console.log('AJAX call was successfully executed ;)');
 		var searchedbody = document.getElementById('searched_file'), tr, td;
@@ -182,8 +182,8 @@ function searchNodeFile(fileName) {
 		    tr.appendChild(td1);
 		    tr.appendChild(td2);
 		    searchedbody.appendChild(tr);
-		      
-			
+
+
 		}
 	}).fail(function(data) {
 		console.log(data);
@@ -194,4 +194,44 @@ function searchNodeFile(fileName) {
 
 
 
+
+
+
+function getNeighbours() {
+	$.ajax({
+		contentType : 'application/json;charset=UTF-8',
+		url : baseUrl + '/request/neighbours',
+		dataType : 'json',
+		type : 'GET',
+		cache : false, // Force requested pages not to be cached by the browser
+		processData : false, // Avoid making query string instead of JSON
+
+	}).done(function(data) {
+
+		console.log('AJAX call was successfully executed ;)');
+		console.log(data);
+		var neighBody = document.getElementById("table_neighbours");
+		while(neighBody.firstChild) {
+			neighBody.removeChild(neighBody.firstChild);
+		}
+
+		data.forEach(function(element){
+			tr = document.createElement('tr');
+			td = document.createElement('td');
+			var t = document.createTextNode(element.ip);
+			td.appendChild(t);
+		    tr.appendChild(td);
+		    td = document.createElement('td');
+			var t = document.createTextNode(element.port);
+			td.appendChild(t);
+			tr.appendChild(td);
+			neighBody.appendChild(tr);
+		    console.log(element);
+		});
+
+	}).fail(function(data) {
+		console.log(data);
+		console.log('AJAX call failed :(');
+	});
+}
 
