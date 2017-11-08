@@ -30,16 +30,10 @@ public class HomeController {
     public String homePage(Model model) {
     	System.out.println(nodeIP+" "+nodePort);
         model.addAttribute("appName", appName);
-        getFile();
         model.addAttribute("nodeIP",nodeIP);
         model.addAttribute("nodePort",nodePort);
 
         return "home";
-    }
-    
-    public static void getFile() {
-    	Resource resource=resourceLoader.getResource("classpath:static/File_Names.txt");
-    	System.out.println(resource.getFilename());
     }
     
 }

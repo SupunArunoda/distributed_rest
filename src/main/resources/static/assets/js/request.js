@@ -18,6 +18,7 @@ document.getElementById("unregister_button").addEventListener("click",
 		function() {
 			var myip = document.getElementById("ip").value;
 			var myport = document.getElementById("port").value;
+			var username = document.getElementById("user_name").value;
 			if (username.trim() != "") {
 				unregisterUser(ip,port);
 				this.disabled=true;

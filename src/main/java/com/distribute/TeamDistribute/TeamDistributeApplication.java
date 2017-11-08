@@ -14,7 +14,7 @@ public class TeamDistributeApplication {
 	ResourceLoader resourceLoader;
 	public static void main(String[] args) {
 		SpringApplication.run(TeamDistributeApplication.class, args);
-	HomeController.getFile();
+	
 	}
 	
 	

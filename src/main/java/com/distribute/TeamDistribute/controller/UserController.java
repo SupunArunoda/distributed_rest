@@ -52,7 +52,7 @@ public class UserController {
 	@RequestMapping(value = "/nouser", method = RequestMethod.POST)
 	public void unregisterUser(@RequestBody Map<String, String> message) {
 		for (int i=0;i<Global.neighborTable.size();i++) {
-			unregisterService.unregisterNode(Global.neighborTable.get(i));
+			unregisterService.unregisterNode(Global.neighborTable.get(i),message);
 		}
 
 	}
