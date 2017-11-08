@@ -5,6 +5,7 @@ var fileList = document.getElementById("files").value;
 var files = fileList.substring(1,fileList.length-1);
 files = files.split(',');
 
+
 var tbody = document.getElementById('file_body'), tr, td;
 files.forEach(function(element) {
 	tr = document.createElement('tr');
@@ -15,6 +16,11 @@ files.forEach(function(element) {
     tbody.appendChild(tr);
     console.log(element);
 });
+
+var rows = document.getElementById("table_neighbours").rows;
+console.log("rows : ");
+console.log(rows);
+
 
 document.getElementById("submit_button").addEventListener("click",
 		function() {
@@ -100,6 +106,25 @@ function getNeighbours() {
 		
 		console.log('AJAX call was successfully executed ;)');
 		console.log(data);
+		var neighBody = document.getElementById("table_neighbours");
+		while(neighBody.firstChild) {
+			neighBody.removeChild(neighBody.firstChild);
+		}
+		
+		data.forEach(function(element){
+			tr = document.createElement('tr');
+			td = document.createElement('td');
+			var t = document.createTextNode(element.ip);
+			td.appendChild(t);
+		    tr.appendChild(td);
+		    td = document.createElement('td');
+			var t = document.createTextNode(element.port);
+			td.appendChild(t);
+			tr.appendChild(td);
+			neighBody.appendChild(tr);
+		    console.log(element);
+		});
+		
 	}).fail(function(data) {
 		console.log(data);
 		console.log('AJAX call failed :(');
