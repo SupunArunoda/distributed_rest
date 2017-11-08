@@ -3,6 +3,13 @@ var hostPort = baseUrl.split("/")[2];
 var host = hostPort.split(":")[0];
 var port = hostPort.split(":")[1];
 
+
+var intervalID = setInterval(function(){
+	
+	console.log("5");
+	
+}, 0.5);
+
 document.getElementById("submit_button").addEventListener("click",
 		function() {
 			var username = document.getElementById("user_name").value;
