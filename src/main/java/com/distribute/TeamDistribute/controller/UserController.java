@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.distribute.TeamDistribute.Global;
 import com.distribute.TeamDistribute.service.RegisterService;
+import com.distribute.TeamDistribute.service.UnRegisterService;
 
 
 @RestController
@@ -37,6 +39,9 @@ public class UserController {
 	@Autowired
 	private RegisterService registerService;
 	
+	@Autowired
+	private UnRegisterService unregisterService;
+	
 
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public void registerUser(@RequestBody Map<String, String> message) {
@@ -44,23 +49,11 @@ public class UserController {
 		registerService.registerNode(nodeIp, nodePort, message.get("user"));
 	}
 	
-//	public void registerNode(String ip,int port,String username) {
-//		
-//		try{
-//			DatagramSocket receiveSock = new DatagramSocket(port);
-//            String init_request = "REG " + ip + " " + port + " " + username;
-//            int length = init_request.length() + 5;
-//            init_request = String.format("%04d", length) + " " + init_request;
-//            DatagramPacket regrequest = new DatagramPacket(init_request.getBytes(), init_request.getBytes().length,
-//            		InetAddress.getByName(bootstrapServerUrl), bootstrapServerPort);
-//            receiveSock.send(regrequest);
-//            receiveSock.close();
-//
-//        }
-//        catch (SocketException e1) {
-//            e1.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//	}
+	@RequestMapping(value = "/nouser", method = RequestMethod.POST)
+	public void unregisterUser(@RequestBody Map<String, String> message) {
+		for (int i=0;i<Global.neighborTable.size();i++) {
+			unregisterService.unregisterNode(Global.neighborTable.get(i),message);
+		}
+
+	}
 }

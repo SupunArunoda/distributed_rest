@@ -1,4 +1,4 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Home Page</title>
 <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
@@ -8,23 +8,19 @@
 </head>
 <body>
 
-	<input type="hidden" id="files" th:value='${files}'/>
-
-	<h1>
-		Welcome to <span th:text="${appName}">Our App</span>
+	<h1>		Welcome to <span th:text="${appName}">Our App</span>
 	</h1>
-
-	<div class="container">
 		<div class="row">
 			<div class="col-sm-3">
 				<div class="form-group">
-					<input type="text" class="form-control" id="username"
+					<input type="text" class="form-control" id="user_name"
 						placeholder="username"></input>
 				</div>
 			</div>
 			<div class="col-sm-3">
 				<div class="form-group">
 					<input type="text" class="form-control" id="ip" th:value="${host}" readonly="readonly"/>
+					
 				</div>
 			</div>
 			<div class="col-sm-2">
@@ -33,11 +29,9 @@
 				</div>
 			</div>
 			<div class="col-sm-2">
-				<button type="button" class="btn btn-success" id="btn_register" style="width: 100%;">Register</button>
-
+				<button type="button" class="btn btn-success" style="width: 100%;">Register</button>
 			</div>
 			<div class="col-sm-2">
-				<button type="button" class="btn btn-info" id="btn_unregister" style="width: 100%;">Unregister</button>
 			</div>
 
 		</div>
@@ -46,6 +40,7 @@
 				<table class="table table-hover" id="file_table">
 					<thead>
 						<tr>
+
 							<th>File Names</th>
 						</tr>
 					</thead>
@@ -54,7 +49,43 @@
 				</table>
 
 			</div>
-			<div class="col-sm-6"></div>
+			
+			
+			<div class="col-sm-6">
+			<div class="form-group">
+					<input type="text" class="form-control" id="filesearch"
+						placeholder="Search File"></input>
+				</div>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+						<th>IP : Port</th>
+							<th>File</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>localhost:8081,localhost:8082</td>
+							<td>Harry Potter</td>
+							
+						</tr>
+						<tr>
+							<td>localhost:8081</td>
+							<td>Knight Rider</td>
+							
+						</tr>
+						<tr>
+							<td>localhost:8081</td>
+							<td>Game of Thrones</td>
+							
+						</tr>
+					</tbody>
+				</table>
+				
+				
+			</div>
+			
 			<div class="col-sm-3 panel panel-default">
 				<table class="table table-hover">
 					<thead>
@@ -85,16 +116,6 @@
 
 	</div>
 
-
-	<div class="container">
-		<textarea id="user_name" placeholder="Type your Name"
-			class="form-control chat-input" autofocus="autofocus"
-			style="width: 50%; height: 40px; border: none; resize: none;"></textarea>
-
-
-		<button id="submit_button" type="button" class="btn btn-primary">Submit</button>
-
-	</div>
 	<script src="assets/js/request.js"></script>
 </body>
 </html>
