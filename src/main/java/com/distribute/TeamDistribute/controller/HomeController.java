@@ -6,6 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.distribute.TeamDistribute.Global;
+
+import net.minidev.json.JSONObject;
+
 @Controller
 public class HomeController {
     @Value("${spring.application.name}")
@@ -22,6 +26,8 @@ public class HomeController {
         model.addAttribute("appName", appName);
         model.addAttribute("host", host);
         model.addAttribute("port", port);
+        model.addAttribute("files", Global.filesList);
+      //  System.out.println(Global.filesList.get(0));
         return "home";
     }
     

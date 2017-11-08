@@ -1,9 +1,20 @@
 var baseUrl = window.location.href;
-var hostPort = baseUrl.split("/")[2];
-var host = hostPort.split(":")[0];
-var port = hostPort.split(":")[1];
 
-document.getElementById("username").value = ${host};
+var fileList = document.getElementById("files").value;
+var files = fileList.substring(1,fileList.length-1);
+files = files.split(',');
+document.getElementById("username").value = files[0];
+
+var tbody = document.getElementById('file_body'), tr, td;
+files.forEach(function(element) {
+	tr = document.createElement('tr');
+	td = document.createElement('td');
+	var t = document.createTextNode(element);
+	td.appendChild(t);
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    console.log(element);
+});
 
 document.getElementById("submit_button").addEventListener("click",
 		function() {

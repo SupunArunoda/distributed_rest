@@ -8,8 +8,7 @@
 </head>
 <body>
 
-
-
+	<input type="hidden" id="files" th:value='${files}'/>
 
 	<h1>
 		Welcome to <span th:text="${appName}">Our App</span>
@@ -34,32 +33,23 @@
 				</div>
 			</div>
 			<div class="col-sm-2">
-				<button type="button" class="btn btn-success" style="width: 100%;">Register</button>
+				<button type="button" class="btn btn-success" id="btn_register" style="width: 100%;">Register</button>
 
 			</div>
 			<div class="col-sm-2">
-				<button type="button" class="btn btn-info" style="width: 100%;">Unregister</button>
+				<button type="button" class="btn btn-info" id="btn_unregister" style="width: 100%;">Unregister</button>
 			</div>
 
 		</div>
 		<div class="row">
 			<div class="col-sm-3 panel panel-default">
-				<table class="table table-hover">
+				<table class="table table-hover" id="file_table">
 					<thead>
 						<tr>
-							<th>Firstname</th>
+							<th>File Names</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
-							<td>John</td>
-						</tr>
-						<tr>
-							<td>Mary</td>
-						</tr>
-						<tr>
-							<td>July</td>
-						</tr>
+					<tbody id="file_body">
 					</tbody>
 				</table>
 
