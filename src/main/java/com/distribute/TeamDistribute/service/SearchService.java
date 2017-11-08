@@ -2,6 +2,7 @@ package com.distribute.TeamDistribute.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,14 +46,22 @@ public class SearchService {
 	
 	public ArrayList<String> searchMyFiles(String query){
 		ArrayList<String> result = new ArrayList<>();
-		List<String> queryWords = Arrays.asList(query.split(" "));
+		String values[]=query.split(" ");
+		List<String> queryWords = new ArrayList<>();
+		Collections.addAll(queryWords, values);
+
 		ArrayList<String> myFiles = Global.filesList;
-		myFiles.forEach(e->{
-			List<String> subStrings = Arrays.asList(e.split(" "));
-			if(subStrings.retainAll(queryWords)){
-				result.add(e);
+		
+		for(String file: myFiles) {
+			List<String> subStrings = new ArrayList<>();
+			Collections.addAll(subStrings, file.split(" "));
+			
+			boolean check=subStrings.retainAll(queryWords);
+			if(!check || (subStrings.size()==queryWords.size())){
+				result.add(file);
 			}
-		});
+		}
+			
 		return result;
 	}
 }
