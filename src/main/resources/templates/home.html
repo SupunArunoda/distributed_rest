@@ -8,7 +8,11 @@
 </head>
 <body>
 
-	<h1>		Welcome to <span th:text="${appName}">Our App</span>
+	<div class="container">
+
+	<input type="hidden" id="files" th:value='${files}'/>
+	<h1>
+		Welcome to <span th:text="${appName}">Our App</span>
 	</h1>
 		<div class="row">
 			<div class="col-sm-3">
@@ -19,35 +23,34 @@
 			</div>
 			<div class="col-sm-3">
 				<div class="form-group">
-					<input type="text" class="form-control" id="ip" th:value="${host}" readonly="readonly"/>
-					
+					<input type="text" class="form-control" id="ip" th:value="'IP : ' + ${nodeIP}"  readonly="readonly"/>		
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
-					<input type="text" class="form-control" id="port"  th:value="${port}" readonly="readonly"/>
+					<input type="text" class="form-control" id="port"  th:value="'Port : ' + ${nodePort}"  readonly="readonly"/>
 				</div>
 			</div>
 			<div class="col-sm-2">
-				<button type="button" class="btn btn-success" style="width: 100%;">Register</button>
+				<button type="button" class="btn btn-success" id="submit_button" style="width: 100%;">Register</button>
 			</div>
 			<div class="col-sm-2">
+				<button type="button" class="btn btn-info" id="unregister_button" style="width: 100%;">Unregister</button>
 			</div>
 
 		</div>
+		
 		<div class="row">
 			<div class="col-sm-3 panel panel-default">
 				<table class="table table-hover" id="file_table">
 					<thead>
 						<tr>
-
 							<th>File Names</th>
 						</tr>
 					</thead>
 					<tbody id="file_body">
 					</tbody>
 				</table>
-
 			</div>
 			
 			
@@ -115,7 +118,6 @@
 		</div>
 
 	</div>
-
-	<script src="assets/js/request.js"></script>
+<script src="assets/js/request.js"></script>
 </body>
 </html>

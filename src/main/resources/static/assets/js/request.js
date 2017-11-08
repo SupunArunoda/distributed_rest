@@ -1,4 +1,9 @@
 var baseUrl = window.location.href;
+
+var fileList = document.getElementById("files").value;
+var files = fileList.substring(1,fileList.length-1);
+files = files.split(',');
+
 var tbody = document.getElementById('file_body'), tr, td;
 files.forEach(function(element) {
 	tr = document.createElement('tr');
