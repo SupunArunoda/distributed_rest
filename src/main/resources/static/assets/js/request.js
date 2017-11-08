@@ -16,9 +16,10 @@ document.getElementById("submit_button").addEventListener("click",
 
 document.getElementById("unregister_button").addEventListener("click",
 		function() {
-			var username = document.getElementById("user_name").value;
+			var myip = document.getElementById("ip").value;
+			var myport = document.getElementById("port").value;
 			if (username.trim() != "") {
-				unregisterUser(username);
+				unregisterUser(ip,port);
 				this.disabled=true;
 				document.getElementById("submit_button").disabled=false;
 			}
@@ -48,7 +49,7 @@ function registerUser(username) {
 	});
 }
 
-function unregisterUser(username) {
+function unregisterUser(myip,myport) {
 	
 	$.ajax({
 		contentType : 'application/json;charset=UTF-8',
@@ -58,7 +59,8 @@ function unregisterUser(username) {
 		cache : false, // Force requested pages not to be cached by the browser
 		processData : false, // Avoid making query string instead of JSON
 		data : JSON.stringify({
-			user : username
+			ip : myip,
+			port : myport
 		}
 		
 		)
