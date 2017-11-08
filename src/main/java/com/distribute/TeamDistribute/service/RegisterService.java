@@ -31,7 +31,7 @@ public class RegisterService {
 	String nodeIP;
 
 	@Value("${server.port}")
-	int nodePort;
+	String nodePort;
 	
 
 	public void registerNode(String ip,int port,String username) {
@@ -60,50 +60,58 @@ public class RegisterService {
             	}
             	else if(noOfNodes==1) {
             		String neighbourIp = values[3];
-                    int neighbourPort = Integer.parseInt(values[4]);
+                    String neighbourPort = values[4];
                     String uri="http://"+neighbourIp+":"+neighbourPort+"/join";
                     RestTemplate restTemplate = new RestTemplate();
                     Map<String,String> node=new HashMap<>();
                     node.put("ip", nodeIP);
-                    node.put("port", String.valueOf(nodePort));
+                    node.put("port", nodePort);
                     HttpHeaders headers = new HttpHeaders();
                     headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
 
                     HttpEntity<Map> entity = new HttpEntity<Map>(node,headers);
                     int answer = restTemplate.postForObject(uri, entity, Integer.class);
-
+                    
+                    node.put("ip", neighbourIp);
+                    node.put("port", neighbourPort);
                     if(answer==0) {
                     	Global.neighborTable.add(node);
                     }
-                    System.out.println("My value "+node.get("ip")+" "+node.get("port"));
+                    System.out.println("Neighbour value "+node.get("ip")+" "+node.get("port"));
             	}
             	else {
             		String neighbourIp = values[3];
-                    int neighbourPort = Integer.parseInt(values[4]);
+                    String neighbourPort = values[4];
                     String uri="http://"+neighbourIp+":"+neighbourPort+"/join";
                     RestTemplate restTemplate = new RestTemplate();
                     Map<String,String> node=new HashMap<>();
                     node.put("ip", nodeIP);
-                    node.put("port", String.valueOf(nodePort));
+                    node.put("port", nodePort);
                     HttpHeaders headers = new HttpHeaders();
                     headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
 
                     HttpEntity<Map> entity = new HttpEntity<Map>(node,headers);
                     int answer = restTemplate.postForObject(uri, entity, Integer.class);
 
+                    Map<String, String> neighbour = new HashMap<String,String>();
+                    
                     if(answer==0) {
-                    	Global.neighborTable.add(node);
+                    	neighbour.put("ip", neighbourIp);
+                    	neighbour.put("port", neighbourPort);
+                    	Global.neighborTable.add(neighbour);
                     }
                     System.out.println("My value "+node.get("ip")+" "+node.get("port"));
                     
                     neighbourIp = values[5];
-                    neighbourPort = Integer.parseInt(values[6]);
+                    neighbourPort = values[6];
                     uri="http://"+neighbourIp+":"+neighbourPort+"/join";
             
                     answer = restTemplate.postForObject(uri, entity, Integer.class);
 
                     if(answer==0) {
-                    	Global.neighborTable.add(node);
+                    	neighbour.put("ip", neighbourIp);
+                    	neighbour.put("port", neighbourPort);
+                    	Global.neighborTable.add(neighbour);
                     }
                     System.out.println("My value "+node.get("ip")+" "+node.get("port"));
                     

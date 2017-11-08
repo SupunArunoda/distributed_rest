@@ -11,9 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.distribute.TeamDistribute.Global;
 
 @RestController
+@RequestMapping(value = "request")
 public class RequestController {
-	@RequestMapping(value = "/result", method = RequestMethod.POST)
+	@RequestMapping(value = "/result", method = RequestMethod.GET)
 	public ArrayList<Map<String, ArrayList<String>>> getResult() {
 		return Global.resultList;
 	}
+	
+	@RequestMapping(value = "/neighbours", method = RequestMethod.GET)
+	public ArrayList<Map<String, String>> getNeighbours() {
+		return Global.neighborTable;
+	}
 }
+

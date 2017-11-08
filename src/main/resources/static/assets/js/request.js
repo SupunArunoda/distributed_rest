@@ -1,4 +1,5 @@
 var baseUrl = window.location.href;
+var tablUpdIntId;
 
 var fileList = document.getElementById("files").value;
 var files = fileList.substring(1,fileList.length-1);
@@ -20,6 +21,9 @@ document.getElementById("submit_button").addEventListener("click",
 			var username = document.getElementById("user_name").value;
 			if (username.trim() != "") {
 				registerUser(username);
+				tablUpdIntId = setInterval(function(){	
+					getNeighbours();
+				}, 60000);
 				this.disabled=true;
 				document.getElementById("unregister_button").disabled=false;
 			}
@@ -28,6 +32,7 @@ document.getElementById("submit_button").addEventListener("click",
 
 document.getElementById("unregister_button").addEventListener("click",
 		function() {
+			clearInterval(tablUpdIntId);
 			var myip = document.getElementById("ip").value;
 			var myport = document.getElementById("port").value;
 			var username = document.getElementById("user_name").value;
@@ -50,9 +55,7 @@ function registerUser(username) {
 		processData : false, // Avoid making query string instead of JSON
 		data : JSON.stringify({
 			user : username
-		}
-		
-		)
+		})
 		
 	}).done(function(data) {
 		console.log('AJAX call was successfully executed ;)');
@@ -74,9 +77,7 @@ function unregisterUser(myip,myport) {
 		data : JSON.stringify({
 			ip : myip,
 			port : myport
-		}
-		
-		)
+		})
 		
 	}).done(function(data) {
 		console.log('AJAX call was successfully executed ;)');
@@ -85,3 +86,23 @@ function unregisterUser(myip,myport) {
 		console.log('AJAX call failed :(');
 	});
 }
+
+function getNeighbours() {
+	$.ajax({
+		contentType : 'application/json;charset=UTF-8',
+		url : baseUrl + '/request/neighbours',
+		dataType : 'json',
+		type : 'GET',
+		cache : false, // Force requested pages not to be cached by the browser
+		processData : false, // Avoid making query string instead of JSON
+		
+	}).done(function(data) {
+		
+		console.log('AJAX call was successfully executed ;)');
+		console.log(data);
+	}).fail(function(data) {
+		console.log(data);
+		console.log('AJAX call failed :(');
+	});
+}
+
