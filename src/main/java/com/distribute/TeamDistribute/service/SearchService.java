@@ -28,6 +28,7 @@ public class SearchService {
 		nodeRequest.put("file_name", query);
 		nodeRequest.put("ip", ip);
         nodeRequest.put("port", port);
+        nodeRequest.put("port", port);
        
 		RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -40,7 +41,7 @@ public class SearchService {
             HttpEntity<Map> entity = new HttpEntity<Map>(node,headers);
             restTemplate.postForObject(uri, entity, String.class);
 		}
-		
+	
 		return result;
 	}
 	

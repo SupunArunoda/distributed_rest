@@ -33,7 +33,6 @@ document.getElementById("filesearch").addEventListener("keypress",
 //    	  searchNodeFile(searchelement);
 //
 //    	}, 1000);
-      searchNodeFile(searchelement);
 //      clearInterval(fileUpdateID)
 
     }
@@ -46,7 +45,7 @@ document.getElementById("submit_button").addEventListener("click",
 				registerUser(username);
 				tablUpdIntId = setInterval(function(){
 					getNeighbours();
-				}, 60000);
+				}, 30000);
 				this.disabled=true;
 				document.getElementById("unregister_button").disabled=false;
 				document.getElementById("user_name").value="";
@@ -162,9 +161,7 @@ function searchFile(fileName) {
 		processData : false, // Avoid making query string instead of JSON
 		data : JSON.stringify({
 			file_name : fileName
-		}
-
-		)
+		})
 
 	}).done(function(data) {
 		console.log('AJAX call was successfully executed ;)');
@@ -182,9 +179,8 @@ function searchFile(fileName) {
 		    tr.appendChild(td1);
 		    tr.appendChild(td2);
 		    searchedbody.appendChild(tr);
-
-
 		}
+		searchNodeFile(fileName);
 	}).fail(function(data) {
 		console.log(data);
 		console.log('AJAX call failed :(');
@@ -195,16 +191,12 @@ function searchNodeFile(fileName) {
 
 	$.ajax({
 		contentType : 'application/json;charset=UTF-8',
-		url : baseUrl + 'result',
+		url : baseUrl + 'request/result',
 		dataType : 'json',
-		type : 'POST',
+		type : 'GET',
 		cache : false, // Force requested pages not to be cached by the browser
 		processData : false, // Avoid making query string instead of JSON
-		data : JSON.stringify({
-			file_name : fileName
-		}
 
-		)
 
 	}).done(function(data) {
 		console.log('AJAX call was successfully executed ;)');

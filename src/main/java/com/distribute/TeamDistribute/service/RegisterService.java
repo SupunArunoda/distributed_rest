@@ -37,7 +37,7 @@ public class RegisterService {
 	public void registerNode(String ip,int port,String username) {
 		
 		try{
-			DatagramSocket receiveSock = new DatagramSocket(port);
+			DatagramSocket receiveSock = new DatagramSocket(Integer.parseInt(nodePort));
 			byte[] buffer = new byte[65536];
             DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
             String init_request = "REG " + ip + " " + port + " " + username;

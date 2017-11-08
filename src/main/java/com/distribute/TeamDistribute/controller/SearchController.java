@@ -42,11 +42,14 @@ public class SearchController {
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public void search(@RequestBody Map<String, String> node) {
 		
+		System.out.println("Searching....");
 		String query = node.get("file_name");
 		String ip = node.get("ip");
 		String port = node.get("port");
+		//System.out.println("port: "+port+" ip: "+ip+" nodeip: "+nodeIP+" nodePort: "+nodePort);
 		
-		if(ip == nodeIP && port == nodePort){
+		if(ip.equals(nodeIP) && port.equals(nodePort)){
+			System.out.println("success");
 			return;
 		}
 		
@@ -63,7 +66,7 @@ public class SearchController {
 	        HttpHeaders headers = new HttpHeaders();
 	        headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
 			String uri="http://"+ip+":"+port+"/searchResult";
-            HttpEntity<Map> entity = new HttpEntity<Map>(node,headers);
+            HttpEntity<Map> entity = new HttpEntity<Map>(searchResult,headers);
             restTemplate.postForObject(uri, entity, String.class);
 		}
 
