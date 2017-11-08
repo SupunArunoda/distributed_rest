@@ -111,6 +111,46 @@ function unregisterUser(myip,myport) {
 	});
 }
 
+function getNeighbours() {
+	$.ajax({
+		contentType : 'application/json;charset=UTF-8',
+		url : baseUrl + '/request/neighbours',
+		dataType : 'json',
+		type : 'GET',
+		cache : false, // Force requested pages not to be cached by the browser
+		processData : false, // Avoid making query string instead of JSON
+
+	}).done(function(data) {
+
+		console.log('AJAX call was successfully executed ;)');
+		console.log(data);
+		var neighBody = document.getElementById("table_neighbours");
+		while(neighBody.firstChild) {
+			neighBody.removeChild(neighBody.firstChild);
+		}
+
+		data.forEach(function(element){
+			tr = document.createElement('tr');
+			td = document.createElement('td');
+			var t = document.createTextNode(element.ip);
+			td.appendChild(t);
+		    tr.appendChild(td);
+		    td = document.createElement('td');
+			var t = document.createTextNode(element.port);
+			td.appendChild(t);
+			tr.appendChild(td);
+			neighBody.appendChild(tr);
+		    console.log(element);
+		});
+
+	}).fail(function(data) {
+		console.log(data);
+		console.log('AJAX call failed :(');
+	});
+}
+
+
+
 function searchFile(fileName) {
 
 	$.ajax({
