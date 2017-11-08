@@ -10,17 +10,21 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.apache.catalina.core.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 @SpringBootApplication
 public class TeamDistributeApplication {
-
+	
 	public static void main(String[] args) {
 		ArrayList<String> files = new ArrayList<String>();
 		FileInputStream fstream = null;
 		try {
-			fstream = new FileInputStream("fileNames.txt");
+			fstream = new FileInputStream("src/main/resources/fileNames.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 			String line;
 			
@@ -44,7 +48,6 @@ public class TeamDistributeApplication {
 			if(!Global.filesList.contains(file))
 				Global.filesList.add(file);
 		}
-		
 		SpringApplication.run(TeamDistributeApplication.class, args);
 	}
 }

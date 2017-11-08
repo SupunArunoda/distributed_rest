@@ -1,8 +1,10 @@
 package com.distribute.TeamDistribute.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.distribute.TeamDistribute.Global;
+import com.distribute.TeamDistribute.service.SearchService;
 
 @RestController
 public class SearchController {
@@ -23,62 +26,52 @@ public class SearchController {
 	@Value("${server.port}")
 	String nodePort;
 	
+	@Autowired
+	SearchService searchService;
+	
 	@RequestMapping(value = "/selfSearch", method = RequestMethod.POST)
-	public String selfSearch(@RequestBody Map<String, String> node) {
-		String result = "fail";
-		String fileName = node.get("file_name");
+	public ArrayList<String> selfSearch(@RequestBody Map<String, String> node) {
+		node.put("ip", nodeIP);
+		node.put("port", nodePort);
 		
-		if(Global.filesList.contains(fileName)){
-			result = "success";
-		}
-		
-		Map<String,String> nodeRequest = new HashMap<>();
-		nodeRequest.put("file_name", fileName);
-		nodeRequest.put("ip", nodeIP);
-        nodeRequest.put("port", nodePort);
-       
-		RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
-		
-		for(Map<String,String> neighbour: Global.neighborTable){
-			String neighbourIp = neighbour.get("ip");
-			String neighbourPort = neighbour.get("port");
-			String uri="http://"+neighbourIp+":"+neighbourPort+"/search";
-            HttpEntity<Map> entity = new HttpEntity<Map>(node,headers);
-            restTemplate.postForObject(uri, entity, String.class);
-		}
+		ArrayList<String> result = searchService.search(node);
 
 		return result;
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	public String search(@RequestBody Map<String, String> node) {
-		String result = "fail";
-		String fileName = node.get("file_name");
+	public void search(@RequestBody Map<String, String> node) {
 		
-		if(Global.filesList.contains(fileName)){
-			result = "success";
+		String query = node.get("file_name");
+		String ip = node.get("ip");
+		String port = node.get("port");
+		
+		if(ip == nodeIP && port == nodePort){
+			return;
 		}
 		
-		RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
-		
-		for(Map<String,String> neighbour: Global.neighborTable){
-			String neighbourIp = neighbour.get("ip");
-			String neighbourPort = neighbour.get("port");
-			String uri="http://"+neighbourIp+":"+neighbourPort+"/search";
+		ArrayList<String> result = searchService.search(node);
+		if(result.size() > 0){
+			Map<String, ArrayList<String>> searchResult = new HashMap<String, ArrayList<String>>();
+			ArrayList<String> ipPort = new ArrayList<>();
+			ipPort.add(nodeIP);
+			ipPort.add(nodePort);
+			searchResult.put("ipPort", ipPort);
+			searchResult.put("files", result);
+			
+			RestTemplate restTemplate = new RestTemplate();
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+			String uri="http://"+ip+":"+port+"/searchResult";
             HttpEntity<Map> entity = new HttpEntity<Map>(node,headers);
             restTemplate.postForObject(uri, entity, String.class);
 		}
 
-		return result;
 	}
 	
 	@RequestMapping(value = "/searchResult", method = RequestMethod.POST)
-	public void searchResult(@RequestBody Map<String, String> node) {
-		Global.searchResult.add(node);
+	public void searchResult(@RequestBody Map<String, ArrayList<String>> node) {
+		Global.resultList.add(node);
 	}
 
 }
