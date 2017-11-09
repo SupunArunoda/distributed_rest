@@ -33,18 +33,21 @@ public class RegisterService {
 	@Value("${server.port}")
 	String nodePort;
 	
+	@Value("${server.port2}")
+	Integer nodePort2;
+	
 
-	public void registerNode(String ip,int port,String username) {
-		
+	public Map<String, String> registerNode(String ip,int port,Map<String, String> message) {
+		Map<String, String> result = new HashMap<>();
 		try{
-			DatagramSocket receiveSock = new DatagramSocket(Integer.parseInt(nodePort));
+			DatagramSocket receiveSock = new DatagramSocket(nodePort2);
 			byte[] buffer = new byte[65536];
             DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
-            String init_request = "REG " + ip + " " + port + " " + username;
+            String init_request = "REG " + ip + " " + port + " " + message.get("user");
             int length = init_request.length() + 5;
             init_request = String.format("%04d", length) + " " + init_request;
             DatagramPacket regrequest = new DatagramPacket(init_request.getBytes(), init_request.getBytes().length,
-            		InetAddress.getByName(bootstrapServerUrl), bootstrapServerPort);
+            		InetAddress.getByName(Global.bootstrapServerIp), Global.bootstrapServerPort);
             receiveSock.send(regrequest);
             receiveSock.receive(incoming);
             receiveSock.close();
@@ -55,8 +58,25 @@ public class RegisterService {
             String command = values[1];
             if(command.equals("REGOK")){
             	int noOfNodes = Integer.parseInt(values[2]);
-            	if(noOfNodes == 0) {
-            		
+            	if(noOfNodes == 0){
+            		result.put("success", "true");
+            		result.put("result", "Node Successfully registered");
+            	}
+            	else if(noOfNodes == 9999) {
+            		result.put("success", "false");
+            		result.put("result", "There is some error in the command");
+            	}
+            	else if(noOfNodes == 9998) {
+            		result.put("success", "false");
+            		result.put("result", "Already registered you, unregister first");
+            	}
+            	else if(noOfNodes == 9997) {
+            		result.put("success", "false");
+            		result.put("result", "Registered to another user, try a different IP and port");
+            	}
+            	else if(noOfNodes == 9996) {
+            		result.put("success", "false");
+            		result.put("result", "Can’t register, BS full");
             	}
             	else if(noOfNodes==1) {
             		String neighbourIp = values[3];
@@ -78,6 +98,8 @@ public class RegisterService {
                     	Global.neighborTable.add(node);
                     }
                     System.out.println("Neighbour value "+node.get("ip")+" "+node.get("port"));
+                    result.put("success", "true");
+                    result.put("result", "Node Successfully registered");
             	}
             	else {
             		String neighbourIp = values[3];
@@ -109,11 +131,14 @@ public class RegisterService {
                     answer = restTemplate.postForObject(uri, entity, Integer.class);
 
                     if(answer==0) {
-                    	neighbour.put("ip", neighbourIp);
-                    	neighbour.put("port", neighbourPort);
-                    	Global.neighborTable.add(neighbour);
+                    	Map<String, String> neighbour2 = new HashMap<String,String>();
+                    	neighbour2.put("ip", neighbourIp);
+                    	neighbour2.put("port", neighbourPort);
+                    	Global.neighborTable.add(neighbour2);
                     }
                     System.out.println("My value "+node.get("ip")+" "+node.get("port"));
+                    result.put("success", "true");
+                    result.put("result", "Node Successfully registered");;
                     
             	}
             	
@@ -121,10 +146,15 @@ public class RegisterService {
             
 
         }
-        catch (SocketException e1) {
-            e1.printStackTrace();
+        catch (SocketException e) {
+            e.printStackTrace();
+            result.put("success", "false");
+            result.put("result", e.toString());
         } catch (IOException e) {
             e.printStackTrace();
+            result.put("success", "false");
+            result.put("result", e.toString());
         }
+		return result;
 	}
 }

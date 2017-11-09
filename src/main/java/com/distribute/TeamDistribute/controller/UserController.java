@@ -44,16 +44,14 @@ public class UserController {
 	
 
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
-	public void registerUser(@RequestBody Map<String, String> message) {
-
-		registerService.registerNode(nodeIp, nodePort, message.get("user"));
+	public Map<String, String> registerUser(@RequestBody Map<String, String> message) {
+		Global.bootstrapServerIp = message.get("ip");
+		Global.bootstrapServerPort = Integer.parseInt(message.get("port"));
+		return registerService.registerNode(nodeIp, nodePort, message);
 	}
 	
 	@RequestMapping(value = "/nouser", method = RequestMethod.POST)
-	public void unregisterUser(@RequestBody Map<String, String> message) {
-		for (int i=0;i<Global.neighborTable.size();i++) {
-			unregisterService.unregisterNode(Global.neighborTable.get(i),message);
-		}
-
+	public Map<String, String> unregisterUser(@RequestBody Map<String, String> message) {
+		return unregisterService.unregisterNode(message);
 	}
 }

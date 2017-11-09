@@ -27,7 +27,6 @@ document.getElementById("filesearch").addEventListener("keypress",
     	var searchelement = document.getElementById("filesearch").value;
 
     	searchFile(searchelement);
-      document.getElementById("filesearch").value="";
 //      fileUpdateID=setInterval(function(){
 //
 //    	  searchNodeFile(searchelement);
@@ -38,18 +37,26 @@ document.getElementById("filesearch").addEventListener("keypress",
     }
 
 		}, false);
+
 document.getElementById("submit_button").addEventListener("click",
 		function() {
 			var username = document.getElementById("user_name").value;
-			if (username.trim() != "") {
-				registerUser(username);
+			var serverIp = document.getElementById("server_ip").value;
+			var serverPort = document.getElementById("server_port").value;
+			console.log(serverIp);
+			if (username.trim() != "" && serverIp.trim() != "" && serverPort.trim() != "") {
+				registerUser(username, serverIp, serverPort);
 				tablUpdIntId = setInterval(function(){
 					getNeighbours();
-				}, 30000);
-				this.disabled=true;
-				document.getElementById("unregister_button").disabled=false;
-				document.getElementById("user_name").value="";
+				}, 30000);				
 			}
+
+		}, false);
+
+document.getElementById("refresh_button").addEventListener("click",
+		function() {
+			var file_name = document.getElementById("filesearch").value;
+			searchNodeFile(file_name);
 
 		}, false);
 
@@ -60,14 +67,12 @@ document.getElementById("unregister_button").addEventListener("click",
 			var myport = document.getElementById("port").value;
 			var username = document.getElementById("user_name").value;
 			if (username.trim() != "") {
-				unregisterUser(ip,port);
-				this.disabled=true;
-				document.getElementById("submit_button").disabled=false;
+				unregisterUser(username);
 			}
 
 		}, false);
 
-function registerUser(username) {
+function registerUser(username,serverIp,serverPort) {
 	
 	$.ajax({
 		contentType : 'application/json;charset=UTF-8',
@@ -77,18 +82,30 @@ function registerUser(username) {
 		cache : false, // Force requested pages not to be cached by the browser
 		processData : false, // Avoid making query string instead of JSON
 		data : JSON.stringify({
-			user : username
+			user : username,
+			ip : serverIp,
+			port : serverPort
 		})
 		
 	}).done(function(data) {
-		console.log('AJAX call was successfully executed ;)');
+		console.log('AJAX call was successfully executed ;)'+data);
+		if(data.success == "true"){
+			document.getElementById("user_name").disabled = true;
+			document.getElementById("submit_button").disabled=true;
+			document.getElementById("server_ip").disabled = true;
+			document.getElementById("server_port").disabled = true;
+			window.alert(data.result);
+		}
+		else{
+			window.alert(data.result);
+		}
 	}).fail(function(data) {
 		console.log(data);
 		console.log('AJAX call failed :(');
 	});
 }
 
-function unregisterUser(myip,myport) {
+function unregisterUser(username) {
 	
 	$.ajax({
 		contentType : 'application/json;charset=UTF-8',
@@ -98,12 +115,21 @@ function unregisterUser(myip,myport) {
 		cache : false, // Force requested pages not to be cached by the browser
 		processData : false, // Avoid making query string instead of JSON
 		data : JSON.stringify({
-			ip : myip,
-			port : myport
+			username : username
 		})
 		
 	}).done(function(data) {
 		console.log('AJAX call was successfully executed ;)');
+		if(data.success == "true"){
+			document.getElementById("user_name").disabled = false;
+			document.getElementById("submit_button").disabled=false;
+			document.getElementById("server_ip").disabled = false;
+			document.getElementById("server_port").disabled = false;
+			window.alert(data.result);
+		}
+		else{
+			window.alert(data.result);
+		}
 	}).fail(function(data) {
 		console.log(data);
 		console.log('AJAX call failed :(');
@@ -166,19 +192,32 @@ function searchFile(fileName) {
 	}).done(function(data) {
 		console.log('AJAX call was successfully executed ;)');
 		var searchedbody = document.getElementById('searched_file'), tr, td;
+		while(searchedbody.firstChild) {
+			searchedbody.removeChild(searchedbody.firstChild);
+		}
 		console.log(data);
+		tr = document.createElement('tr');
+		td1 = document.createElement('td');
+		tr.appendChild(td1);
+		var t1 = document.createTextNode(baseUrl);
+		td1.appendChild(t1);
+		td2 = document.createElement('td');
 		for (var key in data) {
 			var val = data[key];
-			tr = document.createElement('tr');
-			td1 = document.createElement('td');
-			td2 = document.createElement('td');
-			var t1 = document.createTextNode(baseUrl);
-			td1.appendChild(t1);
-			var t2 = document.createTextNode(val);
-			td2.appendChild(t2);
-		    tr.appendChild(td1);
-		    tr.appendChild(td2);
-		    searchedbody.appendChild(tr);
+			tr1 = document.createElement('tr');
+			td3 = document.createElement('td');
+			var t2 = document.createTextNode(val);		
+			td3.appendChild(t2);
+			tr1.appendChild(td3);
+			td2.appendChild(tr1);
+		}
+		tr.appendChild(td2);
+		td4 = document.createElement('td');
+		var t3 = document.createTextNode("1");
+		td4.appendChild(t3);
+		tr.appendChild(td4);
+		if(data.length > 0){
+			searchedbody.appendChild(tr);
 		}
 		searchNodeFile(fileName);
 	}).fail(function(data) {
@@ -201,22 +240,38 @@ function searchNodeFile(fileName) {
 	}).done(function(data) {
 		console.log('AJAX call was successfully executed ;)');
 		var searchedbody = document.getElementById('searched_file'), tr, td;
+		var child = searchedbody.firstChild;
+		while(searchedbody.firstChild) {
+			searchedbody.removeChild(searchedbody.lastChild);
+		}
+		if(child){
+			searchedbody.appendChild(child);
+		}
 		console.log(data);
-		for (var key in data) {
-			var val = data[key];
+		data.forEach(function(key) {
+			console.log(key);
 			tr = document.createElement('tr');
 			td1 = document.createElement('td');
 			td2 = document.createElement('td');
-			var t1 = document.createTextNode(baseUrl);
+			var t1 = document.createTextNode("http://"+key.ipPort[0]+":"+key.ipPort[1]+"/");
 			td1.appendChild(t1);
-			var t2 = document.createTextNode(val);
-			td2.appendChild(t2);
+			key.files.forEach(function(element){
+				tr1 = document.createElement('tr');
+				td3 = document.createElement('td');
+				console.log(element);
+				var t2 = document.createTextNode(element);
+				td3.appendChild(t2);
+				tr1.appendChild(td3);
+				td2.appendChild(tr1);
+			});
 		    tr.appendChild(td1);
 		    tr.appendChild(td2);
+		    td4 = document.createElement('td');
+			var t3 = document.createTextNode(key.ipPort[2]);
+			td4.appendChild(t3);
+			tr.appendChild(td4);
 		    searchedbody.appendChild(tr);
-
-
-		}
+		});
 	}).fail(function(data) {
 		console.log(data);
 		console.log('AJAX call failed :(');

@@ -12,11 +12,14 @@ import com.distribute.TeamDistribute.model.Node;
 public class JoinService {
 
 public int joinNode(Map<String, String> node) {
-	
-	if(Global.neighborTable.size()<3){
+	if(Global.neighborTable.contains(node)){
+		return 0;
+	}
+	else if(Global.neighborTable.size()<3){
 		Global.neighborTable.add(node);
 		return 0;
-	}else {
+	}
+	else {
 		return 9999;
 	}
 }
