@@ -47,7 +47,12 @@ public class UnRegisterService {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
 			HttpEntity<Map> entity = new HttpEntity<Map>(node,headers);
-			int answer = restTemplate.postForObject(uri, entity, Integer.class);
+			try{
+				int answer = restTemplate.postForObject(uri, entity, Integer.class);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 		
 		DatagramSocket receiveSock = null;

@@ -22,5 +22,10 @@ public class RequestController {
 	public ArrayList<Map<String, String>> getNeighbours() {
 		return Global.neighborTable;
 	}
+	
+	@RequestMapping(value = "/heartBeat", method = RequestMethod.GET)
+	public String checkAvailability() {
+		return "success";
+	}
 }
 

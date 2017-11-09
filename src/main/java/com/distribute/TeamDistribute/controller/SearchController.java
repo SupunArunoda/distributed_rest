@@ -90,7 +90,12 @@ public class SearchController {
 				
 				@Override
 				public void run() {
-					restTemplate.postForLocation(uri, entity);
+					try{
+						restTemplate.postForLocation(uri, entity);
+					}
+					catch(Exception e){
+						e.printStackTrace();
+					}
 				}
 			});
             requestThread.start();

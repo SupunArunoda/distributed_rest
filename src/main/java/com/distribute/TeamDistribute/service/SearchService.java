@@ -37,8 +37,13 @@ public class SearchService {
 					String neighbourPort = neighbour.get("port");
 					String uri="http://"+neighbourIp+":"+neighbourPort+"/search";
 		            HttpEntity<Map> entity = new HttpEntity<Map>(node,headers);
-		            //restTemplate.postForObject(uri, entity, String.class);
-		            restTemplate.postForLocation(uri, entity);
+		            
+		            try{
+		            	 restTemplate.postForLocation(uri, entity);
+		            }
+		            catch(Exception e){
+		            	e.printStackTrace();
+		            }
 				}
 			}
 		});

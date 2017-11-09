@@ -46,6 +46,7 @@ public class RegisterService {
             if(command.equals("REGOK")){
             	int noOfNodes = Integer.parseInt(values[2]);
             	if(noOfNodes == 0){
+            		Global.startHeartBeat();
             		result.put("success", "true");
             		result.put("result", "Node Successfully registered");
             	}
@@ -77,7 +78,14 @@ public class RegisterService {
                     headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
 
                     HttpEntity<Map> entity = new HttpEntity<Map>(node,headers);
-                    int answer = restTemplate.postForObject(uri, entity, Integer.class);
+                    int answer = 1;
+                    
+                    try{
+                    	answer = restTemplate.postForObject(uri, entity, Integer.class);
+                    }
+                    catch(Exception e){
+                    	e.printStackTrace();
+                    }
                     
                     node.put("ip", neighbourIp);
                     node.put("port", neighbourPort);
@@ -87,6 +95,7 @@ public class RegisterService {
                     System.out.println("Neighbour value "+node.get("ip")+" "+node.get("port"));
                     result.put("success", "true");
                     result.put("result", "Node Successfully registered");
+                    Global.startHeartBeat();
             	}
             	else {
             		String neighbourIp = values[3];
@@ -100,7 +109,13 @@ public class RegisterService {
                     headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
 
                     HttpEntity<Map> entity = new HttpEntity<Map>(node,headers);
-                    int answer = restTemplate.postForObject(uri, entity, Integer.class);
+                    int answer = 1;
+                    try{
+                    	answer = restTemplate.postForObject(uri, entity, Integer.class);
+                    }
+                    catch(Exception e){
+                    	e.printStackTrace();
+                    }
 
                     Map<String, String> neighbour = new HashMap<String,String>();
                     
@@ -115,7 +130,13 @@ public class RegisterService {
                     neighbourPort = values[6];
                     uri="http://"+neighbourIp+":"+neighbourPort+"/join";
             
-                    answer = restTemplate.postForObject(uri, entity, Integer.class);
+                    try{
+                    	answer = restTemplate.postForObject(uri, entity, Integer.class);
+                    }
+                    catch(Exception e){
+                    	answer = 1;
+                    	e.printStackTrace();
+                    }
 
                     if(answer==0) {
                     	Map<String, String> neighbour2 = new HashMap<String,String>();
@@ -126,7 +147,7 @@ public class RegisterService {
                     System.out.println("My value "+node.get("ip")+" "+node.get("port"));
                     result.put("success", "true");
                     result.put("result", "Node Successfully registered");;
-                    
+                    Global.startHeartBeat();
             	}
             	
             }

@@ -45,10 +45,7 @@ document.getElementById("submit_button").addEventListener("click",
 			var serverPort = document.getElementById("server_port").value;
 			console.log(serverIp);
 			if (username.trim() != "" && serverIp.trim() != "" && serverPort.trim() != "") {
-				registerUser(username, serverIp, serverPort);
-				tablUpdIntId = setInterval(function(){
-					getNeighbours();
-				}, 30000);				
+				registerUser(username, serverIp, serverPort);		
 			}
 
 		}, false);
@@ -94,6 +91,10 @@ function registerUser(username,serverIp,serverPort) {
 			document.getElementById("submit_button").disabled=true;
 			document.getElementById("server_ip").disabled = true;
 			document.getElementById("server_port").disabled = true;
+			document.getElementById("div_bottom").hidden = false;
+			tablUpdIntId = setInterval(function(){
+				getNeighbours();
+			}, 20000);		
 			window.alert(data.result);
 		}
 		else{
@@ -125,6 +126,7 @@ function unregisterUser(username) {
 			document.getElementById("submit_button").disabled=false;
 			document.getElementById("server_ip").disabled = false;
 			document.getElementById("server_port").disabled = false;
+			document.getElementById("div_bottom").hidden = true;
 			window.alert(data.result);
 		}
 		else{
