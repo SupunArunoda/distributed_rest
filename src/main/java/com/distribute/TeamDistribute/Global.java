@@ -13,6 +13,8 @@ public class Global {
 	public static BlockingQueue<String> messagesQueue =  new LinkedBlockingQueue<String>();;
 	public static String bootstrapServerIp;
 	public static int bootstrapServerPort;
+	public static String nodeIp;
+	public static String nodePort;
 	
 	public static void clear(){
 		neighborTable.clear();

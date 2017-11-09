@@ -16,12 +16,7 @@ public class LeaveController {
 	
 	@Autowired
 	private LeaveService leaveService;
-	
-	@Value("${resource.node.ip}")
-	String nodeIP;
-	
-	@Value("${server.port}")
-	int nodePort;	
+
 	
 	@RequestMapping(value = "/leave", method = RequestMethod.POST)
 	public int getLeave(@RequestBody Map<String, String> node) {

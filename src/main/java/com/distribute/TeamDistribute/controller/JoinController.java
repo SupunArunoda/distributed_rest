@@ -19,21 +19,11 @@ public class JoinController {
 	
 
 	@Autowired
-	private JoinService joinservice;
-	
-	@Value("${resource.node.ip}")
-	String nodeIP;
-	
-	@Value("${server.port}")
-	int nodePort;	
+	private JoinService joinservice;	
 
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public int getJoin(@RequestBody Map<String, String> node) {
 		int value=joinservice.joinNode(node);
-//		Node node_return=new Node();
-//		node.setNodeIP(nodeIP);
-//		node.setNodePort(nodePort);
-//		node_return.setValue(value);
 		return value;
 	}
 }

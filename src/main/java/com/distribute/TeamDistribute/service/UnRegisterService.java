@@ -30,23 +30,6 @@ import sun.rmi.server.InactiveGroupException;
 @Service
 public class UnRegisterService {
 	
-	@Value("${resource.node.ip}")
-	String nodeIp;
-	
-	@Value("${server.port}")
-    String nodePort;
-	
-	@Value("${server.port2}")
-	Integer nodePort2;
-	
-
-	@Value("${resource.bootstrap.url}")
-	String bootstrapServerUrl;
-	
-	@Value("${resource.bootstrap.port}")
-    int bootstrapServerPort;
-	
-	
 	//First write leave request to neighbour table ip and ports then send UNREG to Bootstrap server
 	public Map<String, String> unregisterNode(Map <String,String> message) {
 		Map<String, String> result = new HashMap<>();
@@ -58,8 +41,8 @@ public class UnRegisterService {
 			String neighborPort = neighbor.get("port");
 			String uri="http://"+neighborIp+":"+neighborPort+"/leave";
 			Map<String,String> node = new HashMap<>();
-            node.put("ip", nodeIp);
-            node.put("port", nodePort);
+            node.put("ip", Global.nodeIp);
+            node.put("port", Global.nodePort);
 			RestTemplate restTemplate = new RestTemplate();
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
@@ -67,12 +50,13 @@ public class UnRegisterService {
 			int answer = restTemplate.postForObject(uri, entity, Integer.class);
 		}
 		
-		
+		DatagramSocket receiveSock = null;
 		try {
-			DatagramSocket receiveSock = new DatagramSocket(nodePort2);
+			receiveSock = new DatagramSocket(Integer.parseInt(Global.nodePort)+2);
+			receiveSock.setSoTimeout(10000);
 			byte[] buffer = new byte[65536];
             DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
-            String unreg_request = "UNREG " + nodeIp + " " + nodePort + " " + message.get("username");
+            String unreg_request = "UNREG " + Global.nodeIp + " " + Global.nodePort + " " + message.get("username");
             
             int length = unreg_request.length() + 5;
             unreg_request = String.format("%04d", length) + " " + unreg_request;
@@ -96,11 +80,13 @@ public class UnRegisterService {
             Global.clear();
             System.out.println(s);
 		} catch (SocketException e) {
+			receiveSock.close();
             e.printStackTrace();
             result.put("success", "false");
             result.put("result", e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+        	receiveSock.close();
+            e.printStackTrace();           
             result.put("success", "false");
             result.put("result", e.toString());
         }

@@ -21,26 +21,13 @@ import com.distribute.TeamDistribute.model.Node;
 @Service
 public class RegisterService {
 	
-	@Value("${resource.bootstrap.url}")
-	String bootstrapServerUrl;
-	
-	@Value("${resource.bootstrap.port}")
-    int bootstrapServerPort;
-	
-	@Value("${resource.node.ip}")
-	String nodeIP;
 
-	@Value("${server.port}")
-	String nodePort;
-	
-	@Value("${server.port2}")
-	Integer nodePort2;
-	
-
-	public Map<String, String> registerNode(String ip,int port,Map<String, String> message) {
+	public Map<String, String> registerNode(String ip,String port,Map<String, String> message) {
 		Map<String, String> result = new HashMap<>();
+		DatagramSocket receiveSock = null;
 		try{
-			DatagramSocket receiveSock = new DatagramSocket(nodePort2);
+			receiveSock = new DatagramSocket(Integer.parseInt(Global.nodePort)+2);
+			receiveSock.setSoTimeout(10000);
 			byte[] buffer = new byte[65536];
             DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
             String init_request = "REG " + ip + " " + port + " " + message.get("user");
@@ -84,8 +71,8 @@ public class RegisterService {
                     String uri="http://"+neighbourIp+":"+neighbourPort+"/join";
                     RestTemplate restTemplate = new RestTemplate();
                     Map<String,String> node=new HashMap<>();
-                    node.put("ip", nodeIP);
-                    node.put("port", nodePort);
+                    node.put("ip", Global.nodeIp);
+                    node.put("port", Global.nodePort);
                     HttpHeaders headers = new HttpHeaders();
                     headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
 
@@ -107,8 +94,8 @@ public class RegisterService {
                     String uri="http://"+neighbourIp+":"+neighbourPort+"/join";
                     RestTemplate restTemplate = new RestTemplate();
                     Map<String,String> node=new HashMap<>();
-                    node.put("ip", nodeIP);
-                    node.put("port", nodePort);
+                    node.put("ip", Global.nodeIp);
+                    node.put("port", Global.nodePort);
                     HttpHeaders headers = new HttpHeaders();
                     headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
 
@@ -148,10 +135,12 @@ public class RegisterService {
         }
         catch (SocketException e) {
             e.printStackTrace();
+            receiveSock.close();
             result.put("success", "false");
             result.put("result", e.toString());
         } catch (IOException e) {
             e.printStackTrace();
+            receiveSock.close();
             result.put("success", "false");
             result.put("result", e.toString());
         }

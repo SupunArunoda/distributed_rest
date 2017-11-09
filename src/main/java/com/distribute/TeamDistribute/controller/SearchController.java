@@ -26,23 +26,30 @@ public class SearchController {
 	@Value("${resource.node.ip}")
 	String nodeIP;
 	
-	@Value("${server.port}")
-	String nodePort;
-	
 	@Autowired
 	SearchService searchService;
 	
 	@RequestMapping(value = "/selfSearch", method = RequestMethod.POST)
 	public ArrayList<String> selfSearch(@RequestBody Map<String, String> node) {
 		Global.resultList.clear();
-		node.put("ip", nodeIP);
-		node.put("port", nodePort);
+		node.put("ip", Global.nodeIp);
+		node.put("port", Global.nodePort);
 		node.put("hops", 0+"");
 		String uniqueID = UUID.randomUUID().toString();
 		Global.messagesQueue.add(uniqueID);
 		node.put("id", uniqueID);
 		
 		ArrayList<String> result = searchService.search(node);
+		if(result.size()>0){
+			Map<String, ArrayList<String>> searchResult = new HashMap<String, ArrayList<String>>();
+			ArrayList<String> ipPort = new ArrayList<>();
+			ipPort.add(Global.nodeIp);
+			ipPort.add(Global.nodePort);
+			ipPort.add(node.get("hops"));
+			searchResult.put("ipPort", ipPort);
+			searchResult.put("files", result);
+			Global.resultList.add(searchResult);
+		}
 
 		return result;
 	}
@@ -55,19 +62,6 @@ public class SearchController {
 		String ip = node.get("ip");
 		String port = node.get("port");
 		String messageId = node.get("id");
-		//System.out.println("port: "+port+" ip: "+ip+" nodeip: "+nodeIP+" nodePort: "+nodePort);
-		
-	/*	if(ip.equals(nodeIP) && port.equals(nodePort)){
-			try {
-				System.out.println(Global.messagesQueue.take());
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			System.out.println(messageId);
-			System.out.println("success");
-			return;
-		}*/
 		
 		if(Global.messagesQueue.contains(messageId)){
 			System.out.println("success");
@@ -80,8 +74,8 @@ public class SearchController {
 		if(result.size() > 0){
 			Map<String, ArrayList<String>> searchResult = new HashMap<String, ArrayList<String>>();
 			ArrayList<String> ipPort = new ArrayList<>();
-			ipPort.add(nodeIP);
-			ipPort.add(nodePort);
+			ipPort.add(Global.nodeIp);
+			ipPort.add(Global.nodePort);
 			ipPort.add(node.get("hops"));
 			searchResult.put("ipPort", ipPort);
 			searchResult.put("files", result);

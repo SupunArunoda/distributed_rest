@@ -240,12 +240,8 @@ function searchNodeFile(fileName) {
 	}).done(function(data) {
 		console.log('AJAX call was successfully executed ;)');
 		var searchedbody = document.getElementById('searched_file'), tr, td;
-		var child = searchedbody.firstChild;
 		while(searchedbody.firstChild) {
 			searchedbody.removeChild(searchedbody.lastChild);
-		}
-		if(child){
-			searchedbody.appendChild(child);
 		}
 		console.log(data);
 		data.forEach(function(key) {

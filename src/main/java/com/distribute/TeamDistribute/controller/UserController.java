@@ -24,18 +24,6 @@ import com.distribute.TeamDistribute.service.UnRegisterService;
 @RequestMapping(value = "register")
 public class UserController {
 	
-	@Value("${resource.node.ip}")
-	String nodeIp;
-	
-	@Value("${server.port}")
-    int nodePort;
-	
-	@Value("${resource.bootstrap.url}")
-	String bootstrapServerUrl;
-	
-	@Value("${resource.bootstrap.port}")
-    int bootstrapServerPort;
-	
 	@Autowired
 	private RegisterService registerService;
 	
@@ -47,7 +35,7 @@ public class UserController {
 	public Map<String, String> registerUser(@RequestBody Map<String, String> message) {
 		Global.bootstrapServerIp = message.get("ip");
 		Global.bootstrapServerPort = Integer.parseInt(message.get("port"));
-		return registerService.registerNode(nodeIp, nodePort, message);
+		return registerService.registerNode(Global.nodeIp, Global.nodePort, message);
 	}
 	
 	@RequestMapping(value = "/nouser", method = RequestMethod.POST)
