@@ -50,7 +50,7 @@ public class Global {
     					restTemplate.getForObject(uri, String.class);
     				}
     				catch(Exception e){
-    					e.printStackTrace();
+    					//.printStackTrace();
     					Global.neighborTable.remove(neighbour);
     				}
     			}

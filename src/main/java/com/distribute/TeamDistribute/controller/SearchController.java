@@ -32,6 +32,7 @@ public class SearchController {
 	
 	@RequestMapping(value = "/selfSearch", method = RequestMethod.POST)
 	public ArrayList<String> selfSearch(@RequestBody Map<String, String> node) {
+		
 		Global.startTime = new Date();
 		Global.resultList.clear();
 		node.put("ip", Global.nodeIp);
@@ -54,6 +55,7 @@ public class SearchController {
 			searchResult.put("files", result);
 			Global.resultList.add(searchResult);
 			result.add(String.valueOf(diffSec));
+			Global.resultList.get(0).get("ipPort").remove(diffSec);
 		}
 
 		return result;
@@ -99,7 +101,7 @@ public class SearchController {
 						restTemplate.postForLocation(uri, entity);
 					}
 					catch(Exception e){
-						e.printStackTrace();
+					//.printStackTrace();
 					}
 				}
 			});

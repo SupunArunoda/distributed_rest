@@ -94,7 +94,7 @@ function registerUser(username,serverIp,serverPort) {
 			document.getElementById("div_bottom").hidden = false;
 			tablUpdIntId = setInterval(function(){
 				getNeighbours();
-			}, 20000);		
+			}, 10000);		
 			window.alert(data.result);
 		}
 		else{

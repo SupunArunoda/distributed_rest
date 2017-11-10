@@ -51,7 +51,7 @@ public class UnRegisterService {
 				int answer = restTemplate.postForObject(uri, entity, Integer.class);
 			}
 			catch(Exception e){
-				e.printStackTrace();
+				//.printStackTrace();
 			}
 		}
 		
@@ -86,12 +86,12 @@ public class UnRegisterService {
             System.out.println(s);
 		} catch (SocketException e) {
 			receiveSock.close();
-            e.printStackTrace();
+            //.printStackTrace();
             result.put("success", "false");
             result.put("result", e.toString());
         } catch (IOException e) {
         	receiveSock.close();
-            e.printStackTrace();           
+            //.printStackTrace();           
             result.put("success", "false");
             result.put("result", e.toString());
         }

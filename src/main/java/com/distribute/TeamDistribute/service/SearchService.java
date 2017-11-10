@@ -42,7 +42,7 @@ public class SearchService {
 		            	 restTemplate.postForLocation(uri, entity);
 		            }
 		            catch(Exception e){
-		            	e.printStackTrace();
+		            	//.printStackTrace();
 		            }
 				}
 			}
