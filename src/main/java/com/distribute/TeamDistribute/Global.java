@@ -1,7 +1,9 @@
 package com.distribute.TeamDistribute;
 
 import java.net.DatagramPacket;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,6 +24,7 @@ public class Global {
 	public static String nodeIp;
 	public static String nodePort;
 	public static Timer timer;
+	public static Date startTime;
 	
 	public static void clear(){
 		neighborTable.clear();

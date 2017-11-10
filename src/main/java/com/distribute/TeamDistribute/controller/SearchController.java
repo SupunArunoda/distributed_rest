@@ -2,6 +2,7 @@ package com.distribute.TeamDistribute.controller;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -31,6 +32,7 @@ public class SearchController {
 	
 	@RequestMapping(value = "/selfSearch", method = RequestMethod.POST)
 	public ArrayList<String> selfSearch(@RequestBody Map<String, String> node) {
+		Global.startTime = new Date();
 		Global.resultList.clear();
 		node.put("ip", Global.nodeIp);
 		node.put("port", Global.nodePort);
@@ -41,14 +43,17 @@ public class SearchController {
 		
 		ArrayList<String> result = searchService.search(node);
 		if(result.size()>0){
+			float diffSec = (new Date().getTime() - Global.startTime.getTime());	
 			Map<String, ArrayList<String>> searchResult = new HashMap<String, ArrayList<String>>();
 			ArrayList<String> ipPort = new ArrayList<>();
 			ipPort.add(Global.nodeIp);
 			ipPort.add(Global.nodePort);
 			ipPort.add(node.get("hops"));
+			ipPort.add(String.valueOf(diffSec));
 			searchResult.put("ipPort", ipPort);
 			searchResult.put("files", result);
 			Global.resultList.add(searchResult);
+			result.add(String.valueOf(diffSec));
 		}
 
 		return result;
@@ -106,6 +111,8 @@ public class SearchController {
 	
 	@RequestMapping(value = "/searchResult", method = RequestMethod.POST)
 	public void searchResult(@RequestBody Map<String, ArrayList<String>> node) {
+		float diffSec = (new Date().getTime() - Global.startTime.getTime());
+		node.get("ipPort").add(String.valueOf(diffSec));
 		Global.resultList.add(node);
 		return;
 	}
