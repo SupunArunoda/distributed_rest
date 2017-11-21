@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.Random;
 
 import org.apache.catalina.core.ApplicationContext;
-import org.assertj.core.util.CheckReturnValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
